@@ -10,17 +10,22 @@ import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import android.view.View
 import android.webkit.URLUtil
+import android.widget.EditText
+import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.IOException
 
 class ScanView : AppCompatActivity() {
 
+    private lateinit var back_scan_ibtn: ImageButton
+    private lateinit var ligth_on_fab: FloatingActionButton
+    private lateinit var input_code_etx: EditText
     private var cameraSource: CameraSource? = null
     private var cameraView: SurfaceView? = null
     private val MY_PERMISSIONS_REQUEST_CAMERA = 1
@@ -29,10 +34,20 @@ class ScanView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_scan_view)
+        getSupportActionBar()?.hide()
 
-        cameraView = findViewById<SurfaceView>(R.id.scan_view)
+        initComponents()
         initQR()
+    }
+
+    fun initComponents(){
+
+        back_scan_ibtn = findViewById(R.id.back_scan_ibtn)
+        ligth_on_fab = findViewById(R.id.ligth_on_fab)
+        input_code_etx = findViewById(R.id.input_code_etx)
+        cameraView = findViewById(R.id.scan_view)
+
     }
 
     fun initQR() {
@@ -83,7 +98,7 @@ class ScanView : AppCompatActivity() {
         })
 
         // preparo el detector de QR
-        barcodeDetector.setProcessor(object : Detector.Processor<Barcode>() {
+        barcodeDetector.setProcessor(object : Detector.Processor<Barcode> {
             override fun release() {}
 
 
@@ -120,7 +135,7 @@ class ScanView : AppCompatActivity() {
                             override fun run() {
                                 try {
                                     synchronized(this) {
-                                        wait(5000)
+                                        Thread.sleep(5000)
                                         // limpiamos el token
                                         tokenanterior = ""
                                     }

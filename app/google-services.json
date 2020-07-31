@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "207524809756",
+    "firebase_url": "https://tokencash-138c3.firebaseio.com",
+    "project_id": "tokencash-138c3",
+    "storage_bucket": "tokencash-138c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207524809756:android:54b0f3450b92fde14ca3d9",
+        "android_client_info": {
+          "package_name": "com.brainstormideas.tokencash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207524809756-udkf80i59u0p4pchict96970043r00nu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQC1t8fNe3DA1b9ostxI7fHNPswnd43b8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207524809756-udkf80i59u0p4pchict96970043r00nu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
