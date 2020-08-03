@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var credits_tv: TextView
     private lateinit var see_all_tv: TextView
 
+    var tokensAcumulated: Int? = null
+
     var sessionManager: SessionManager? = null
 
 
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     fun initComponents() {
 
         sessionManager = SessionManager()
+        sessionManager!!.SessionManager(getApplicationContext())
         sessionManager!!.checkLogin()
 
         profile_fab = findViewById(R.id.profile_fab)
@@ -42,6 +45,14 @@ class MainActivity : AppCompatActivity() {
         credits_tv = findViewById(R.id.credits_tv)
         see_all_tv = findViewById(R.id.see_all_tv)
 
+        tokensAcumulated = sessionManager!!.getToken()!!.toInt()
+
+        if(tokensAcumulated==0){
+            credits_tv.setText("-")
+        }else{
+            credits_tv.setText(tokensAcumulated!!.toString())
+        }
+        
         profile_fab.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 goToProfile()
@@ -54,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         })
         pay_fab.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-                goToPayScan()
+                credits_tv.setText("-")
             }
         })
         scan_fab.setOnClickListener(object : View.OnClickListener{
@@ -78,12 +89,6 @@ class MainActivity : AppCompatActivity() {
 
     fun goToNotifications() {
         val intent = Intent(this, Notifications::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
-    }
-
-    fun goToPayScan() {
-        val intent = Intent(this, ScanView::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }

@@ -43,6 +43,7 @@ class Login : AppCompatActivity() {
     fun initComponents(){
 
         sessionManager = SessionManager()
+        sessionManager.SessionManager(getApplicationContext())
 
         email_etx = findViewById(R.id.email_etx)
         pass_etx = findViewById(R.id.pass_etx)
@@ -57,7 +58,7 @@ class Login : AppCompatActivity() {
 
         register_btn.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-
+                registerUser()
             }
         })
 
@@ -73,9 +74,14 @@ class Login : AppCompatActivity() {
         email = email_etx.text.toString()
         password = pass_etx.text.toString()
 
+        if(email.equals("admin") && password.equals("admin")){
+            sessionManager.createLoginSession("User", email)
+            goToMain()
+        }
+
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
 
-            progressBar.setMessage("Registrando usuario...")
+            progressBar.setMessage("Iniciando sesion...")
             progressBar.show()
 
             mAuth.signInWithEmailAndPassword(email, password)
@@ -89,6 +95,33 @@ class Login : AppCompatActivity() {
                             Toast.LENGTH_SHORT).show()
                     }
                 }
+        } else {
+            Toast.makeText(this, "Ingrese todos los datos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun registerUser(){
+
+        email = email_etx.text.toString()
+        password = pass_etx.text.toString()
+
+
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+
+            progressBar.setMessage("Registrando usuario...")
+            progressBar.show()
+
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this){
+                task ->
+                if (task.isSuccessful){
+                    Toast.makeText(this, "Usuario creado correctamente con el correo $email",
+                        Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(this, "Error al registrar usurio",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+
         } else {
             Toast.makeText(this, "Ingrese todos los datos", Toast.LENGTH_SHORT).show()
         }

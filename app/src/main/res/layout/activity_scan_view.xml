@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".ScanView">
 
     <LinearLayout
@@ -17,23 +18,28 @@
             android:id="@+id/back_scan_ibtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
         <TextView
             android:id="@+id/info_scan_tv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="5"
             android:background="#00FFFFFF"
             android:gravity="center"
-            android:text="Escanea tu codigo QR" />
+            android:text="Escanea tu codigo QR"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/ligth_on_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="10dp"
             android:clickable="true"
             app:srcCompat="@android:drawable/ic_lock_power_off" />
     </LinearLayout>
@@ -42,12 +48,12 @@
         android:id="@+id/scan_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15" />
+        android:layout_weight="10" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="5"
         android:orientation="vertical">
 
         <TextView
@@ -55,13 +61,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Ingresar manualmente" />
+            android:text="Generar codigo"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/code_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Codigo:" />
+            android:text="Codigo obtenido:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/input_code_etx"
@@ -71,10 +81,17 @@
             android:inputType="textPersonName" />
 
         <Button
-            android:id="@+id/send_btn"
+            android:id="@+id/getApi_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enviar" />
+            android:text="Obtener Token" />
+
+        <Button
+            android:id="@+id/copy_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Copiar" />
+
     </LinearLayout>
 
 </LinearLayout>

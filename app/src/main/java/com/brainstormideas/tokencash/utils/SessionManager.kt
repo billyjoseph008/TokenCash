@@ -64,4 +64,13 @@ class SessionManager {
     fun isLoggedIn(): Boolean {
         return pref!!.getBoolean(IS_LOGIN, false)
     }
+
+    fun setToken(token: String?){
+        editor!!.putString(KEY_TOKEN, token)
+        editor!!.commit()
+    }
+    fun getToken(): String? {
+        return pref!!.getString(KEY_TOKEN, "0")
+    }
+
 }

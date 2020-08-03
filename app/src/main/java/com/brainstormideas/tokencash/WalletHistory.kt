@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 
 class WalletHistory : AppCompatActivity() {
 
-    private lateinit var wallet_back_btn : Button
+    private lateinit var wallet_back_ibtn : ImageButton
     private lateinit var money_acumulate_tv: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +23,10 @@ class WalletHistory : AppCompatActivity() {
 
     fun initComponents() {
 
-        wallet_back_btn = findViewById(R.id.wallet_back_btn)
+        wallet_back_ibtn = findViewById(R.id.wallet_back_btn)
         money_acumulate_tv = findViewById(R.id.money_acumulate_tv)
 
-        wallet_back_btn.setOnClickListener(object : View.OnClickListener{
+        wallet_back_ibtn.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 goToMain()
             }

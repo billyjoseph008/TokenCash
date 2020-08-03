@@ -20,8 +20,7 @@ class Notifications : AppCompatActivity() {
     fun initComponents() {
 
         back_notificaciones_ibtn = findViewById(R.id.back_notificaciones_ibtn)
-
-        back_notificaciones_ibtn.setOnClickListener(object : View.OnClickListener{
+        back_notificaciones_ibtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 goToMain()
             }
@@ -35,3 +34,4 @@ class Notifications : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
+}
