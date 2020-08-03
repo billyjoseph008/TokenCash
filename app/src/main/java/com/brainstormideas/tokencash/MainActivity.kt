@@ -7,6 +7,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.brainstormideas.tokencash.utils.SessionManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,8 +22,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var see_all_tv: TextView
 
     var tokensAcumulated: Int? = null
-
     var sessionManager: SessionManager? = null
+
+
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var database: FirebaseDatabase
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +44,10 @@ class MainActivity : AppCompatActivity() {
         sessionManager = SessionManager()
         sessionManager!!.SessionManager(getApplicationContext())
         sessionManager!!.checkLogin()
+
+        database = FirebaseDatabase.getInstance()
+        mAuth = FirebaseAuth.getInstance()
+        databaseReference = database.reference.child("Users")
 
         profile_fab = findViewById(R.id.profile_fab)
         notification_fab =  findViewById(R.id.notification_fab)
@@ -67,6 +78,8 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(v: View?) {
                 credits_tv.setText("-")
                 sessionManager!!.setToken("0")
+                databaseReference.removeValue()
+
             }
         })
         scan_fab.setOnClickListener(object : View.OnClickListener{
