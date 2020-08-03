@@ -20,6 +20,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.brainstormideas.tokencash.utils.*
@@ -28,6 +29,9 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.zxing.BarcodeFormat
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +42,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 class ScanView : AppCompatActivity() {
@@ -50,12 +55,15 @@ class ScanView : AppCompatActivity() {
     private var cameraSource: CameraSource? = null
     private var cameraView: SurfaceView? = null
     private val MY_PERMISSIONS_REQUEST_CAMERA = 1
-    private val MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 2
     private var token = ""
     private var tokenanterior = ""
     var sessionManager: SessionManager? = null
     var tokenRecibido = ""
     var BaseUrl = "https://desarrollo.app.tokencash.mx"
+
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var databaseReferenceRegistros: DatabaseReference
+    private lateinit var database: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +84,11 @@ class ScanView : AppCompatActivity() {
         getApi_btn = findViewById(R.id.getApi_btn)
         copy_btn = findViewById(R.id.copy_btn)
         cameraView = findViewById(R.id.scan_view)
+
+        database = FirebaseDatabase.getInstance()
+        mAuth = FirebaseAuth.getInstance()
+        databaseReferenceRegistros = database.reference.child("Registros")
+
 
         back_scan_ibtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -112,7 +125,7 @@ class ScanView : AppCompatActivity() {
         val call = service.getToken()
         call.enqueue(object : Callback<Token> {
             override fun onResponse(call: Call<Token>, response: Response<Token>) {
-                tokenRecibido = response.body()?.token.toString().substring(0, 4)
+                tokenRecibido = response.body()?.token.toString().substring(40, 44)
                 input_code_etx.setText(tokenRecibido)
             }
 
@@ -183,13 +196,13 @@ class ScanView : AppCompatActivity() {
         barcodeDetector.setProcessor(object : Detector.Processor<Barcode> {
             override fun release() {}
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun receiveDetections(detections: Detector.Detections<Barcode>) {
                 val barcodes = detections.getDetectedItems()
 
                 if (barcodes.size() > 0) {
 
-                    token = barcodes.valueAt(0).displayValue.toString().substring(0, 4);
-
+                    token = barcodes.valueAt(0).displayValue.toString()
 
                     if (token != tokenanterior) {
 
@@ -198,9 +211,13 @@ class ScanView : AppCompatActivity() {
 
                         if (token.equals(tokenRecibido)) {
 
+                            val currentTime = LocalDateTime.now()
                             var tokenActual = sessionManager!!.getToken()!!.toInt()
                             tokenActual++
                             sessionManager?.setToken(tokenActual.toString())
+
+                            databaseReferenceRegistros.push().
+                            setValue(tokenActual.toString()+" totales agregados. Fecha: "+ currentTime)
 
                             val i = Intent(applicationContext, MainActivity::class.java)
                             startActivity(i)
@@ -209,7 +226,6 @@ class ScanView : AppCompatActivity() {
                         } else {
 
                         }
-
                         Thread(object : Runnable {
                             override fun run() {
                                 try {

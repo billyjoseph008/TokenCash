@@ -4,12 +4,14 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.brainstormideas.tokencash.utils.SessionManager
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -45,6 +47,11 @@ class Login : AppCompatActivity() {
         sessionManager = SessionManager()
         sessionManager.SessionManager(getApplicationContext())
 
+        progressBar = ProgressDialog(this)
+        database = FirebaseDatabase.getInstance()
+        mAuth = FirebaseAuth.getInstance()
+        databaseReference = database.reference.child("Users")
+
         email_etx = findViewById(R.id.email_etx)
         pass_etx = findViewById(R.id.pass_etx)
         login_btn = findViewById(R.id.login_btn)
@@ -62,17 +69,12 @@ class Login : AppCompatActivity() {
             }
         })
 
-        progressBar = ProgressDialog(this)
-        database = FirebaseDatabase.getInstance()
-        mAuth = FirebaseAuth.getInstance()
-        databaseReference = database.reference.child("Users")
-
     }
 
     private fun loginUser() {
 
-        email = email_etx.text.toString()
-        password = pass_etx.text.toString()
+        email = email_etx.getText().toString().trim()
+        password = pass_etx.getText().toString().trim()
 
         if(email.equals("admin") && password.equals("admin")){
             sessionManager.createLoginSession("User", email)
@@ -91,10 +93,14 @@ class Login : AppCompatActivity() {
                         sessionManager.createLoginSession("User", email)
                         goToMain()
                     } else {
+                        Log.w("Aviso", "createUserWithEmail:failure", task.getException());
                         Toast.makeText(this, "Fallo al autenticar",
                             Toast.LENGTH_SHORT).show()
                     }
                 }
+
+            progressBar.dismiss()
+
         } else {
             Toast.makeText(this, "Ingrese todos los datos", Toast.LENGTH_SHORT).show()
         }
@@ -102,8 +108,8 @@ class Login : AppCompatActivity() {
 
     private fun registerUser(){
 
-        email = email_etx.text.toString()
-        password = pass_etx.text.toString()
+        email = email_etx.getText().toString().trim()
+        password = pass_etx.getText().toString().trim()
 
 
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
@@ -116,13 +122,17 @@ class Login : AppCompatActivity() {
                 if (task.isSuccessful){
                     Toast.makeText(this, "Usuario creado correctamente con el correo $email",
                         Toast.LENGTH_SHORT).show()
+                    mAuth.currentUser?.sendEmailVerification()
                 } else{
-                    Toast.makeText(this, "Error al registrar usurio",
+                    Log.w("Aviso", "createUserWithEmail:failure", task.getException());
+                    Toast.makeText(this, "Error al registrar usuario",
                         Toast.LENGTH_SHORT).show()
                 }
             }
+            progressBar.dismiss()
 
         } else {
+
             Toast.makeText(this, "Ingrese todos los datos", Toast.LENGTH_SHORT).show()
         }
     }
@@ -132,4 +142,7 @@ class Login : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
+
+
 }
+

@@ -136,7 +136,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/pay_fab"
+                    android:id="@+id/restart_fab"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -210,7 +210,8 @@
             android:id="@+id/start_poster_iv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:srcCompat="@drawable/portada" />
     </LinearLayout>
 
 </LinearLayout>

@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var profile_fab: FloatingActionButton
     private lateinit var notification_fab: FloatingActionButton
-    private lateinit var pay_fab: FloatingActionButton
+    private lateinit var restart_fab: FloatingActionButton
     private lateinit var scan_fab: FloatingActionButton
 
     private lateinit var credits_tv: TextView
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         profile_fab = findViewById(R.id.profile_fab)
         notification_fab =  findViewById(R.id.notification_fab)
-        pay_fab = findViewById(R.id.pay_fab)
+        restart_fab = findViewById(R.id.restart_fab)
         scan_fab = findViewById(R.id.scan_fab)
         credits_tv = findViewById(R.id.credits_tv)
         see_all_tv = findViewById(R.id.see_all_tv)
@@ -63,9 +63,10 @@ class MainActivity : AppCompatActivity() {
                 goToNotifications()
             }
         })
-        pay_fab.setOnClickListener(object : View.OnClickListener{
+        restart_fab.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 credits_tv.setText("-")
+                sessionManager!!.setToken("0")
             }
         })
         scan_fab.setOnClickListener(object : View.OnClickListener{
