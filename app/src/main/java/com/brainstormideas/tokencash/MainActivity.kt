@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance()
         mAuth = FirebaseAuth.getInstance()
-        databaseReference = database.reference.child("Users")
+        databaseReference = database.reference.child("Registros")
 
         profile_fab = findViewById(R.id.profile_fab)
         notification_fab =  findViewById(R.id.notification_fab)
